@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
             if (health == 0)
             {
                 Destroy(gameObject);
+                //GameController.gameController.GameOver();
             }
         }
     }
