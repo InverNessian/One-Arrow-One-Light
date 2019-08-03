@@ -8,11 +8,10 @@ public class ArrowController : MonoBehaviour
     BoxCollider2D boxCollider;
     bool attached;
     bool pickup;
-    float speed = 5f;
+    public float speed; //since speed is a public variable, you can set its value from the editor
     Vector3 target;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         //set initial values
@@ -23,17 +22,22 @@ public class ArrowController : MonoBehaviour
         target = Vector3.zero;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // check for input and if it's attached to the player
         if (Input.GetButtonDown("Fire1") && attached)
         {
-            //if it is attached, detach it and modify position, then set as pickup
+            //if it is attached, detach it and add velocity
             attached = false;
-            Debug.Log(Input.mousePosition);
-            transform.position += new Vector3(1,0,0);
-            pickup = true;
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 velocity = new Vector2((mousePos.x - player.transform.position.x)*speed, (mousePos.y - player.transform.position.y)*speed);
+            GetComponentInParent<Rigidbody2D>().AddForce(velocity);
+
+            float newAngle = Vector2.Angle(new Vector2(mousePos.x, mousePos.y), new Vector2(player.transform.position.x, player.transform.position.y));
+            
+            //Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            Debug.Log(Vector2.Angle(new Vector2(mousePos.x, mousePos.y), new Vector2(player.transform.position.x, player.transform.position.y)));
+            //this is for finding the new angle we need to rotate the arrow, so that it's facing the right direction as it fires
         }
 
         //track player position while attached
@@ -52,5 +56,13 @@ public class ArrowController : MonoBehaviour
             attached = true;
             pickup = false;
         }
+
+        //when the arrow collides with anything other than the character, if it's not attached it stops moving
+        if (!attached && !collision.name.Equals("Character"))
+        {
+            GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
+            pickup = true;
+        }
+
     }
 }
