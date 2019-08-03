@@ -35,7 +35,7 @@ public class ArrowController : MonoBehaviour
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             target.z = 0;
             direction = target - transform.position;
-            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg+270;
             transform.rotation = UnityEngine.Quaternion.AngleAxis(angle, UnityEngine.Vector3.forward);
          }
 
