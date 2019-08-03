@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class ArrowController : MonoBehaviour
 {
-    GameObject parent;
+    GameObject player;
     BoxCollider2D boxCollider;
+    bool attached;
+    bool pickup;
+    float speed = 5f;
+    Vector3 target;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        parent = GameObject.FindGameObjectWithTag("Player");
+        //set initial values
+        player = GameObject.FindGameObjectWithTag("Player");
         boxCollider = GetComponent<BoxCollider2D>();
+        attached = true;
+        pickup = false;
+        target = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && transform.parent != null)
+        // check for input and if it's attached to the player
+        if (Input.GetButtonDown("Fire1") && attached)
         {
-            transform.parent = null;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
-            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-                
+            //if it is attached, detach it and modify position, then set as pickup
+            attached = false;
+            Debug.Log(Input.mousePosition);
+            transform.position += new Vector3(1,0,0);
+            pickup = true;
         }
+
+        //track player position while attached
+        if (attached)
+        {
+            transform.position = player.transform.position;
+        }
+
     }
-
-    private void FireArrow()
-    {
-
-    }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        transform.position = parent.transform.position;
-        transform.parent = parent.transform;
+        //when the arrow collides with the player, if it's a pickup it reattaches
+        if (pickup && collision.name.Equals("Character"))
+        {
+            attached = true;
+            pickup = false;
+        }
     }
 }

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    GameObject parent;
+    GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
-        parent = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        //transform.position = parent.transform.position;
-
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+        //set the X and Y to the player's location
     }
 }
