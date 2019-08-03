@@ -40,6 +40,8 @@ public class Enemy1 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Arrow") && !collision.gameObject.GetComponent<ArrowController>().attached)
         {
+            //this lets us shake the camera for 4 frames when we kill an enemy
+            Camera.main.GetComponent<CameraController>().CameraShake(4);
             Destroy(gameObject);
         }
     }

@@ -64,13 +64,6 @@ public class ArrowController : MonoBehaviour
             pickup = false;
         }
 
-        //when the arrow collides with anything other than the character, if it's not attached it stops moving
-        if (!attached && !collision.name.Equals("Character"))
-        {
-            GetComponentInParent<Rigidbody2D>().velocity = UnityEngine.Vector2.zero;
-            pickup = true;
-        }
-
         if (!attached && collision.CompareTag("Wall"))
         {
             target = transform.position;
