@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int MaxSpeed = 10;
+    public int speed = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            GetComponentInParent<Rigidbody2D>().AddForce(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+            transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0) * speed * Time.deltaTime;
         }
     }
 }
