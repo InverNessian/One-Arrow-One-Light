@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class ArrowController : MonoBehaviour
@@ -9,9 +10,10 @@ public class ArrowController : MonoBehaviour
     bool attached;
     bool pickup;
     public float speed; //since speed is a public variable, you can set its value from the editor
-    Vector3 target;
-
-
+    UnityEngine.Vector3 target;
+    UnityEngine.Vector3 mousePos;
+    UnityEngine.Vector3 direction;
+    private float angle;
     void Start()
     {
         //set initial values
@@ -19,7 +21,7 @@ public class ArrowController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         attached = true;
         pickup = false;
-        target = Vector3.zero;
+      
     }
 
     void Update()
@@ -29,23 +31,27 @@ public class ArrowController : MonoBehaviour
         {
             //if it is attached, detach it and add velocity
             attached = false;
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 velocity = new Vector2((mousePos.x - player.transform.position.x)*speed, (mousePos.y - player.transform.position.y)*speed);
-            GetComponentInParent<Rigidbody2D>().AddForce(velocity);
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = 0;
+            direction = target - transform.position;
+            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = UnityEngine.Quaternion.AngleAxis(angle, UnityEngine.Vector3.forward);
+         }
 
-            float newAngle = Vector2.Angle(new Vector2(mousePos.x, mousePos.y), new Vector2(player.transform.position.x, player.transform.position.y));
+        if (transform.position != target)
+        {
             
-            //Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            Debug.Log(Vector2.Angle(new Vector2(mousePos.x, mousePos.y), new Vector2(player.transform.position.x, player.transform.position.y)));
-            //this is for finding the new angle we need to rotate the arrow, so that it's facing the right direction as it fires
+            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+           
+            pickup = true;
         }
-
         //track player position while attached
         if (attached)
         {
             transform.position = player.transform.position;
         }
 
+       
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
@@ -60,8 +66,13 @@ public class ArrowController : MonoBehaviour
         //when the arrow collides with anything other than the character, if it's not attached it stops moving
         if (!attached && !collision.name.Equals("Character"))
         {
-            GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
+            GetComponentInParent<Rigidbody2D>().velocity = UnityEngine.Vector2.zero;
             pickup = true;
+        }
+
+        if (!attached && collision.CompareTag("Wall"))
+        {
+            target = transform.position;
         }
 
     }
