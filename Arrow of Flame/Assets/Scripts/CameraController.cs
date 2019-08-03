@@ -18,37 +18,40 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!shake)
+        //added this line to keep the game from erroring out after a game over
+        if (GameController.gameController.game_state == GameController.GAME_STATE.IN_GAME)
         {
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
-            //set the X and Y to the player's location
-        }
-        else
-        {
-            //if the camera is shaking, do this fancy method
-            float ShakeX = Random.Range(1f, 2f) * magnitude;
-            float ShakeY = Random.Range(1f, 2f) * magnitude;
-            if(shakeTimer % 2 == 0)
+            if (!shake)
             {
-                ShakeX = -ShakeX;
+                transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+                //set the X and Y to the player's location
             }
             else
             {
-                //every other frame, we invert the shake value so that it actually looks like it shakes
-                ShakeY = -ShakeY;
-            }
-            //set the value like normal, except we add our random stuff as well to offset it
-            transform.position = new Vector3(player.transform.position.x + ShakeX, player.transform.position.y + ShakeY, -10);
+                //if the camera is shaking, do this fancy method
+                float ShakeX = Random.Range(1f, 2f) * magnitude;
+                float ShakeY = Random.Range(1f, 2f) * magnitude;
+                if (shakeTimer % 2 == 0)
+                {
+                    ShakeX = -ShakeX;
+                }
+                else
+                {
+                    //every other frame, we invert the shake value so that it actually looks like it shakes
+                    ShakeY = -ShakeY;
+                }
+                //set the value like normal, except we add our random stuff as well to offset it
+                transform.position = new Vector3(player.transform.position.x + ShakeX, player.transform.position.y + ShakeY, -10);
 
-            //now we tick down our frame counter
-            shakeTimer -= 1;
-            if (shakeTimer == 0)
-            {
-                shake = false;
+                //now we tick down our frame counter
+                shakeTimer -= 1;
+                if (shakeTimer == 0)
+                {
+                    shake = false;
+                }
             }
+
         }
-
-
     }
 
     public void CameraShake(int frames)

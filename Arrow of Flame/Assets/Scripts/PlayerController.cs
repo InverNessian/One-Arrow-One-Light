@@ -28,25 +28,30 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        //added this line to keep the game from erroring out after a game over
+        if (GameController.gameController.game_state == GameController.GAME_STATE.IN_GAME)
         {
-            MoveTarget = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0) * speed * Time.deltaTime;
-            direction =  transform.position;
-            transform.position += MoveTarget;
-            direction -= transform.position;
-            anim.SetBool("IsMoving", true);
-            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg+90;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            lastRot = transform.rotation;
-        }else
-        {
-            transform.rotation = lastRot;
-            anim.SetBool("IsMoving", false);
-        }
-        invulnerabilityTimer -= Time.deltaTime;
-        if (invulnerabilityTimer <= 0)
-        {
-            speed = normalSpeed;
+            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                MoveTarget = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0) * speed * Time.deltaTime;
+                direction = transform.position;
+                transform.position += MoveTarget;
+                direction -= transform.position;
+                anim.SetBool("IsMoving", true);
+                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                lastRot = transform.rotation;
+            }
+            else
+            {
+                transform.rotation = lastRot;
+                anim.SetBool("IsMoving", false);
+            }
+            invulnerabilityTimer -= Time.deltaTime;
+            if (invulnerabilityTimer <= 0)
+            {
+                speed = normalSpeed;
+            }
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
