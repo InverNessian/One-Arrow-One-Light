@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraController.cs" />
+<<<<<<< Updated upstream
+=======
+     <Compile Include="Assets\Scripts\Enemy1.cs" />
+>>>>>>> Stashed changes
      <Compile Include="Assets\Scripts\Pickup.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
  <Reference Include="Unity.Timeline.Editor">
