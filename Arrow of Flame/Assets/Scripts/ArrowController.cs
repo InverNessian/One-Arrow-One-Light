@@ -10,6 +10,7 @@ public class ArrowController : MonoBehaviour
     bool attached;
     bool pickup;
     public float speed; //since speed is a public variable, you can set its value from the editor
+
     UnityEngine.Vector3 target;
     UnityEngine.Vector3 mousePos;
     UnityEngine.Vector3 direction;
