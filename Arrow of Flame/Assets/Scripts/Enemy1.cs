@@ -38,9 +38,8 @@ public class Enemy1 : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Arrow"))
+        if (collision.gameObject.CompareTag("Arrow") && !collision.gameObject.GetComponent<ArrowController>().attached)
         {
-            
             Destroy(gameObject);
         }
     }

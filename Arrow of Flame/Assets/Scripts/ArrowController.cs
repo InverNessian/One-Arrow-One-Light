@@ -7,7 +7,7 @@ public class ArrowController : MonoBehaviour
 {
     GameObject player;
     BoxCollider2D boxCollider;
-    bool attached;
+    public bool attached;
     bool pickup;
     public float speed; //since speed is a public variable, you can set its value from the editor
 
