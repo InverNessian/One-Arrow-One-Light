@@ -21,6 +21,14 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         StartCoroutine(EndTransition());
+        try
+        {
+            FindObjectOfType<AudioManager>().Play("Basic");
+        }
+        catch
+        {
+            Debug.Log("No AudioManager found");
+        }
     }
 
     private void Update()

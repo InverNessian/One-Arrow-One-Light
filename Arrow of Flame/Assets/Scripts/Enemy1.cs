@@ -13,10 +13,14 @@ public class Enemy1 : MonoBehaviour
     public float randomMoveTimer=1;
     private float randomMoveTimerCounter=0;
     private UnityEngine.Vector3 lastPos;
+    private bool danger = false;
+    public AudioManager audioManager;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -25,9 +29,14 @@ public class Enemy1 : MonoBehaviour
 
         if (UnityEngine.Vector2.Distance(transform.position, player.transform.position) < 5)
         {
-            
-            
-                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            if (!danger)
+            {
+                audioManager.Stop("Basic");
+                audioManager.Stop("Darkness");
+                audioManager.Play("WowDanger");
+                danger = true;
+            }
+            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         }
         
        /* else
@@ -55,6 +64,9 @@ public class Enemy1 : MonoBehaviour
         {
             //this lets us shake the camera for 4 frames when we kill an enemy
             Camera.main.GetComponent<CameraController>().CameraShake(4);
+            audioManager.Stop("WowDanger");
+            audioManager.Play("Basic");
+            danger = false;
             Destroy(gameObject);
         }
 
