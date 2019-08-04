@@ -20,24 +20,21 @@ public class Enemy1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //added this line to keep the game from erroring out after a game over
-        if (GameController.gameController.game_state == GameController.GAME_STATE.IN_GAME)
+        if (UnityEngine.Vector2.Distance(transform.position, player.transform.position) < 5)
         {
-            if (UnityEngine.Vector2.Distance(transform.position, player.transform.position) < 5)
-            {
-                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-            }
-            else
-            {
-                if (randomMoveTimerCounter <= 0)
-                {
-                    RandoPos = new UnityEngine.Vector3(transform.position.x + Random.Range(-1, 1.1f), transform.position.y + Random.Range(-1, 1.1f), 0);
-                    randomMoveTimerCounter = randomMoveTimer;
-                }
-                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, RandoPos, speed * Time.deltaTime);
-                randomMoveTimerCounter -= Time.deltaTime;
-            }
+            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         }
+        else
+        {
+            if (randomMoveTimerCounter <= 0)
+            {
+                RandoPos = new UnityEngine.Vector3(transform.position.x + Random.Range(-1, 1.1f), transform.position.y + Random.Range(-1, 1.1f), 0);
+                randomMoveTimerCounter = randomMoveTimer;
+            }
+            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, RandoPos, speed * Time.deltaTime);
+            randomMoveTimerCounter -= Time.deltaTime;
+        }
+        
     }
 
     void OnTriggerEnter2D(Collider2D collision)

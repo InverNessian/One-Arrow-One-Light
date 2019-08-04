@@ -27,35 +27,31 @@ public class ArrowController : MonoBehaviour
 
     void Update()
     {
-        //added this line to keep the game from erroring out after a game over
-        if (GameController.gameController.game_state == GameController.GAME_STATE.IN_GAME)
+        // check for input and if it's attached to the player
+        if (Input.GetButtonDown("Fire1") && attached)
         {
-            // check for input and if it's attached to the player
-            if (Input.GetButtonDown("Fire1") && attached)
-            {
-                //if it is attached, detach it and add velocity
-                attached = false;
-                target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                target.z = 0;
-                direction = target - transform.position;
-                angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 270;
-                transform.rotation = UnityEngine.Quaternion.AngleAxis(angle, UnityEngine.Vector3.forward);
-            }
-
-            if (transform.position != target)
-            {
-
-                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-
-                pickup = true;
-            }
-            //track player position while attached
-            if (attached)
-            {
-                transform.position = player.transform.position;
-            }
-
+            //if it is attached, detach it and add velocity
+            attached = false;
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = 0;
+            direction = target - transform.position;
+            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 270;
+            transform.rotation = UnityEngine.Quaternion.AngleAxis(angle, UnityEngine.Vector3.forward);
         }
+
+        if (transform.position != target)
+        {
+
+            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+            pickup = true;
+        }
+        //track player position while attached
+        if (attached)
+        {
+            transform.position = player.transform.position;
+        }
+
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
