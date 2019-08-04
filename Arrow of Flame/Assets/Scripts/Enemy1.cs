@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
+    public Collider2D Room;
     public Transform player;
     public float speed = 3;
     private UnityEngine.Vector3 RandoPos;
     public float randomMoveTimer=1;
     private float randomMoveTimerCounter=0;
+    private UnityEngine.Vector3 lastPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,20 +22,30 @@ public class Enemy1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (UnityEngine.Vector2.Distance(transform.position, player.transform.position) < 5)
         {
-            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            
+            
+                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         }
-        else
+        
+       /* else
         {
             if (randomMoveTimerCounter <= 0)
             {
                 RandoPos = new UnityEngine.Vector3(transform.position.x + Random.Range(-1, 1.1f), transform.position.y + Random.Range(-1, 1.1f), 0);
                 randomMoveTimerCounter = randomMoveTimer;
             }
-            transform.position = UnityEngine.Vector3.MoveTowards(transform.position, RandoPos, speed * Time.deltaTime);
+            
+            
+                transform.position = UnityEngine.Vector3.MoveTowards(transform.position, RandoPos, speed * Time.deltaTime);
+                
+            
             randomMoveTimerCounter -= Time.deltaTime;
-        }
+        } */
+        
+      
         
     }
 
@@ -45,5 +57,6 @@ public class Enemy1 : MonoBehaviour
             Camera.main.GetComponent<CameraController>().CameraShake(4);
             Destroy(gameObject);
         }
+
     }
 }

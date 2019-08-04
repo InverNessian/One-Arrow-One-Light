@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class WoodenWall : MonoBehaviour
 {
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -20,7 +21,8 @@ public class WoodenWall : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Arrow") && !collision.gameObject.GetComponent<ArrowController>().attached)
         {
-            Destroy(gameObject);
+            anim.SetBool("Hit", true);
+            Destroy(gameObject,1);
         }
     }
 
