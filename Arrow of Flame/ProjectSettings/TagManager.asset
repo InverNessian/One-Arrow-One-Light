@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Arrow
   - Transition
+  - Heart
   layers:
   - Default
   - TransparentFX

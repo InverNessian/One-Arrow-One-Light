@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
             health -= 1;
             invulnerabilityTimer = invulnerability;
             speed = speedBoost;
+            GameObject[] hearts = GameObject.FindGameObjectsWithTag("Heart");
+            Destroy(hearts[0]);
             if (health == 0)
             {
                 GameObject.Find("GameController").GetComponent<GameController>().LoadScene(4);
