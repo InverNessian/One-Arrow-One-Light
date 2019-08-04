@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour
     //public static GameController gameController;
     //public enum GAME_STATE { MAIN_MENU, CUTSCENE, IN_GAME, GAME_OVER, LEVEL_WIN }
     //public GAME_STATE game_state;
-    //public GameObject gameOverUI;
+
+    public GameObject transitionUI;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -18,7 +20,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        //game_state = GAME_STATE.MAIN_MENU;
+        StartCoroutine(EndTransition());
     }
 
     private void Update()
@@ -30,14 +32,29 @@ public class GameController : MonoBehaviour
         //    LoadScene(2);
         //}
     }
-    public static void LoadSceneStatic(int sceneIndex)
+
+    IEnumerator EndTransition()
     {
-        SceneManager.LoadScene(sceneIndex);
+        //after we load the new scene, set it to inactive so we can click other button UIs
+        yield return new WaitForSeconds(1.2f);
+        transitionUI.SetActive(false);
     }
+
+    IEnumerator SceneLoad(int scene)
+    {
+        //this method actually does all the heavy lifting
+        //we find the transition image
+        transitionUI.SetActive(true);
+        transitionUI.GetComponent<Animator>().SetBool("Exit", true);
+        yield return new WaitForSeconds(1.2f);
+        SceneManager.LoadScene(scene);
+    }
+
 
     public void LoadScene(int sceneIndex)
     {
-        SceneManager.LoadScene(sceneIndex);
+        //this is a nice pretty method that our buttons can call
+        StartCoroutine(SceneLoad(sceneIndex));
     }
 
     public void GameOver()

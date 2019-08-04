@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
             speed = speedBoost;
             if (health == 0)
             {
-                GameController.LoadSceneStatic(3);
+                GameObject.Find("GameController").GetComponent<GameController>().LoadScene(4);
             }
         }
     }

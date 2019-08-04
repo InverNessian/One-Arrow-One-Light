@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Enemy
   - Arrow
+  - Transition
   layers:
   - Default
   - TransparentFX
